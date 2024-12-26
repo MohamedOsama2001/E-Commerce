@@ -46,7 +46,7 @@ function About() {
                 <div className="card h-100">
                     <img className="card-img-top img-fluid" src="./assets/women.jpg" alt="Women's Clothing"/>
                     <div className="card-body">
-                        <h5 className="card-title text-center">WoMen's Clothing</h5>
+                        <h5 className="card-title text-center">Women's Clothing</h5>
                     </div>
                 </div>
             </div>
