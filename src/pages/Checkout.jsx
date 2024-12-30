@@ -25,7 +25,7 @@ function Checkout() {
     <>
       <Nav />
       <div className="container my-5">
-        <h2 className="text-cenetr">Checkout</h2>
+        <h2 className="text-center">Checkout</h2>
         <hr/>
         <div className="row my-5">
           <div className="col-lg-8">
