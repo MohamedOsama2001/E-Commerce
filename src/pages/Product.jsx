@@ -1,16 +1,23 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { Footer, Nav } from "../components";
 import Marquee from "react-fast-marquee";
+import { useDispatch } from "react-redux";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { addToCart } from "../redux/action";
 
 function Product() {
   const { id } = useParams();
   const [product, setProduct] = useState({});
   const [relatedProducts, setRelatedProducts] = useState([]);
+  const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   useEffect(() => {
     const fetchproduct = async () => {
+      setLoading(true);
       try {
         const response = await axios.get(
           `https://fakestoreapi.com/products/${id}`
@@ -25,6 +32,7 @@ function Product() {
           (item) => item.id !== productData.id
         );
         setRelatedProducts(relatedData);
+        setLoading(false)
       } catch (error) {
         console.log("Error product fetching", error);
       }
@@ -34,10 +42,22 @@ function Product() {
   const productdetails = (id) => {
     navigate(`/product/${id}`);
   };
+  // add to cart
+  const handleAddToCart = (product) => {
+    const user = JSON.parse(localStorage.getItem("user"));
+    if (!user) {
+      toast.error("Yom must logged in first!");
+    } else {
+      dispatch(addToCart(product));
+      toast.success("Added to Cart");
+    }
+  };
   return (
     <>
       <Nav />
-      <div className="container my-5">
+      {loading?(<div className="text-center p-5">...loading</div>):(
+        <>
+        <div className="container my-5">
         <div className="row align-items-center">
           <div className="col-md-6 text-center mb-4 mb-md-0">
             <img
@@ -60,8 +80,15 @@ function Product() {
             <div className="text-dark fw-bold fs-4 mb-3">${product.price}</div>
             <p className="text-muted">{product.description}</p>
             <div className="d-flex gap-2">
-              <button className="btn btn-outline-dark">Add to Cart</button>
-              <button className="btn btn-dark">Go to Cart</button>
+              <button
+                className="btn btn-outline-dark"
+                onClick={() => handleAddToCart(product)}
+              >
+                Add to Cart
+              </button>
+              <Link className="btn btn-dark" to={"/cart"}>
+                Go to Cart
+              </Link>
             </div>
           </div>
         </div>
@@ -103,7 +130,7 @@ function Product() {
                   >
                     Buy Now
                   </button>
-                  <button className="btn btn-outline-dark btn-sm">
+                  <button className="btn btn-outline-dark btn-sm" onClick={() => handleAddToCart(item)}>
                     Add to Cart
                   </button>
                 </div>
@@ -112,8 +139,11 @@ function Product() {
           ))}
         </Marquee>
       </div>
+        </>
+      )}
 
       <Footer />
+      <ToastContainer/>
     </>
   );
 }

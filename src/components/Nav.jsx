@@ -1,7 +1,9 @@
 import React from "react";
+import { useSelector } from "react-redux";
 import { NavLink } from "react-router-dom";
-
 function Nav() {
+  const cartItems = useSelector((state) => state.cart.items);
+  const user = JSON.parse(localStorage.getItem("user"));
   return (
     <>
       <nav className="navbar navbar-expand-lg navbar-light bg-body-secondary py-3 sticky-top">
@@ -45,11 +47,19 @@ function Nav() {
             </ul>
             <div className="d-flex gap-2">
               <NavLink className="btn btn-outline-dark" to="/login">
-              <i class="fas fa-sign-in-alt"></i> Login
+                <i class="fas fa-sign-in-alt"></i> Login
               </NavLink>
               <NavLink className="btn btn-outline-dark" to="/register">
-              <i class="fas fa-user-plus"></i> Register
+                <i class="fas fa-user-plus"></i> Register
               </NavLink>
+              {user ? (
+                <NavLink className="btn btn-outline-dark" to="/cart">
+                  <i class="fas fa-cart-plus"></i> Cart(
+                  {cartItems ? cartItems.length : 0})
+                </NavLink>
+              ) : (
+                ""
+              )}
             </div>
           </div>
         </div>

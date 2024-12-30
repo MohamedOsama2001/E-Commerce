@@ -1,6 +1,18 @@
-import React from "react";
+import React, { useRef } from "react";
 import { Footer, Nav } from "../components";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 function Contact() {
+  const name=useRef(null)
+  const email=useRef(null)
+  const message=useRef(null)
+  const handleContact=(e)=>{
+    e.preventDefault()
+    toast.success('Message sent successfully!')
+    name.current.value=''
+    email.current.value=''
+    message.current.value=''
+  }
   return (
     <>
       <Nav />
@@ -9,7 +21,7 @@ function Contact() {
         <hr />
         <div className="row my-4 h-100">
           <div className="col-md-4 col-lg-4 col-sm-8 mx-auto">
-            <form>
+            <form onSubmit={handleContact}>
               <div className="mb-3">
                 <label for="name" className="form-label">
                   Name
@@ -19,6 +31,8 @@ function Contact() {
                   className="form-control"
                   id="name"
                   placeholder="Enter Your Name"
+                  required
+                  ref={name}
                 />
               </div>
               <div className="mb-3">
@@ -30,6 +44,8 @@ function Contact() {
                   className="form-control"
                   id="email"
                   placeholder="name@example.com"
+                  required
+                  ref={email}
                 />
               </div>
               <div className="mb-3">
@@ -41,6 +57,8 @@ function Contact() {
                   id="message"
                   rows={5}
                   placeholder="Enter your message"
+                  required
+                  ref={message}
                 ></textarea>
               </div>
               <div className="d-grid">
@@ -53,6 +71,7 @@ function Contact() {
         </div>
       </div>
       <Footer />
+      <ToastContainer/>
     </>
   );
 }

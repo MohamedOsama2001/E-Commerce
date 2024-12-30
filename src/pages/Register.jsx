@@ -1,8 +1,20 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React, { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import { Footer, Nav } from "../components";
 
 function Login() {
+  const [name,setName]=useState("")
+  const [email,setEmail]=useState("")
+  const [pass,setPass]=useState("")
+  const navigate=useNavigate()
+  const handleRegister = (e)=>{
+    e.preventDefault()
+    const user={
+      name,email,pass
+    }
+    localStorage.setItem('user',JSON.stringify(user))
+    navigate('/login')
+  }
   return (
     <>
       <Nav />
@@ -11,8 +23,8 @@ function Login() {
         <hr />
         <div className="row my-4 h-100">
           <div className="col-md-4 col-lg-4 col-sm-8 mx-auto">
-            <form>
-            <div className="mb-3">
+            <form onSubmit={handleRegister}>
+              <div className="mb-3">
                 <label for="name" className="form-label">
                   Full Name
                 </label>
@@ -21,6 +33,8 @@ function Login() {
                   className="form-control"
                   id="name"
                   placeholder="Enter Your Name"
+                  required
+                  onChange={(e)=>setName(e.target.value)}
                 />
               </div>
               <div className="mb-3">
@@ -32,6 +46,8 @@ function Login() {
                   className="form-control"
                   id="email"
                   placeholder="name@example.com"
+                  required
+                  onChange={(e)=>setEmail(e.target.value)}
                 />
               </div>
               <div className="mb-3">
@@ -43,6 +59,8 @@ function Login() {
                   className="form-control"
                   id="password"
                   placeholder="Password"
+                  required
+                  onChange={(e)=>setPass(e.target.value)}
                 />
               </div>
               <div className="mb-3">
@@ -62,8 +80,7 @@ function Login() {
           </div>
         </div>
       </div>
-      <Footer/>
-      
+      <Footer />
     </>
   );
 }

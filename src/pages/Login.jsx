@@ -1,8 +1,23 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React, { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import { Footer, Nav } from "../components";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 function Login() {
+  const [email,setEmail]=useState('')
+  const [pass,setPass]=useState('')
+  const navigate=useNavigate()
+  const handleLogin=(e)=>{
+    e.preventDefault();
+    const user=JSON.parse(localStorage.getItem('user'))
+    if(user && user.email===email && user.pass===pass){
+      navigate('/')
+    }
+    else{
+      toast.error('Invalid Credentials')
+    }
+  }
   return (
     <>
       <Nav />
@@ -11,7 +26,7 @@ function Login() {
         <hr />
         <div className="row my-5 h-100">
           <div className="col-md-4 col-lg-4 col-sm-8 mx-auto">
-            <form>
+            <form onSubmit={handleLogin}>
               <div className="mb-3">
                 <label for="email" className="form-label">
                   Email address
@@ -21,6 +36,9 @@ function Login() {
                   className="form-control"
                   id="email"
                   placeholder="name@example.com"
+                  onChange={(e)=>setEmail(e.target.value)}
+                  required
+                  
                 />
               </div>
               <div className="mb-3">
@@ -32,6 +50,8 @@ function Login() {
                   className="form-control"
                   id="password"
                   placeholder="Password"
+                  onChange={(e)=>setPass(e.target.value)}
+                  required
                 />
               </div>
               <div className="mb-3">
@@ -52,6 +72,7 @@ function Login() {
         </div>
       </div>
       <Footer/>
+      <ToastContainer/>
     </>
   );
 }
