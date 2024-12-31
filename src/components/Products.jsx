@@ -15,7 +15,7 @@ function Products() {
   const dispatch = useDispatch();
   //fetch categories
   useEffect(() => {
-    const fetchcategories = async () => {
+    const fetchCategories = async () => {
       try {
         const response = await axios.get(
           "https://fakestoreapi.com/products/categories"
@@ -23,14 +23,14 @@ function Products() {
         const categoriesData = response.data;
         setCategories(categoriesData);
       } catch (error) {
-        console.log("Error fetching categories:", error);
+        console.error("Error fetching categories:", error);
       }
     };
-    fetchcategories();
+    fetchCategories();
   }, []);
   //fetch products
   useEffect(() => {
-    const fetchproducts = async () => {
+    const fetchProducts = async () => {
       try {
         const response = await axios.get("https://fakestoreapi.com/products/");
         const productsData = response.data;
@@ -38,10 +38,10 @@ function Products() {
         setAllProducts(productsData);
         setLoading(false);
       } catch (error) {
-        console.log("Error fetching products:", error);
+        console.error("Error fetching products:", error);
       }
     };
-    fetchproducts();
+    fetchProducts();
   }, []);
   // products filter
   const filterproducts = useCallback(
@@ -49,10 +49,7 @@ function Products() {
       if (category === "all") {
         setProducts(allProducts);
       } else {
-        const newProducts = allProducts.filter(
-          (pro) => pro.category === category
-        );
-        setProducts(newProducts);
+        setProducts(allProducts.filter((pro) => pro.category === category));
       }
     },
     [allProducts]
@@ -115,7 +112,12 @@ function Products() {
                       </h5>
                       <p className="card-text text-muted">
                         {pro.description.slice(0, 90)}
-                        <Link className="text-primary text-decoration-none" to={`/product/${pro.id}`}>...more</Link>
+                        <Link
+                          className="text-primary text-decoration-none"
+                          to={`/product/${pro.id}`}
+                        >
+                          ...more
+                        </Link>
                       </p>
                       <hr />
                       <h6 className="text-dark fw-bold">${pro.price}</h6>
