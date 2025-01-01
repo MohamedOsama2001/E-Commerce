@@ -46,7 +46,7 @@ function Product() {
   const handleAddToCart = (product) => {
     const user = JSON.parse(localStorage.getItem("user"));
     if (!user) {
-      toast.error("Yom must logged in first!");
+      toast.error("You must logged in first!");
     } else {
       dispatch(addToCart(product));
       toast.success("Added to Cart");
